@@ -359,12 +359,14 @@ if K.image_dim_ordering() == "th":
     if args.model == "vgg19":
         weights = get_file('vgg19_weights_th_dim_ordering_th_kernels_notop.h5', TH_19_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
     else:
-        weights = get_file('vgg16_weights_th_dim_ordering_th_kernels_notop.h5', THEANO_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+        #weights = get_file('vgg16_weights_th_dim_ordering_th_kernels_notop.h5', THEANO_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+        weights = '/ds_shared/MKT/models/keras_weights/vgg16_weights_th_dim_ordering_th_kernels_notop_1.h5'
 else:
     if args.model == "vgg19":
         weights = get_file('vgg19_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_19_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
     else:
-        weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+        #weights = get_file('vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', TF_WEIGHTS_PATH_NO_TOP, cache_subdir='models')
+        weights = '/ds_shared/MKT/models/keras_weights/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
 
 model.load_weights(weights)
 
@@ -432,8 +434,10 @@ def style_loss(style, combination, mask_path=None, nb_channels=None):
 # base image in the generated image
 def content_loss(base, combination):
     channel_dim = 0 if K.image_dim_ordering() == "th" else -1
-
-    channels = K.int_shape(base)[channel_dim]
+    # can we make keras int_shape compatible with 
+    # <class 'theano.tensor.var.TensorVariable'>
+    #channels = K.int_shape(base)[channel_dim]
+    channels = 3
     size = img_width * img_height
 
     if args.content_loss_type == 1:
